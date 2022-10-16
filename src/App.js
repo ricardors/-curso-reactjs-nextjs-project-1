@@ -1,4 +1,4 @@
-import logo from './logo.svg';
+
 import './App.css';
 import { Component } from 'react';
 
@@ -7,51 +7,78 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: 'Ricardo',
-      counter: 0
+      counter: 0,
+      posts: [
+        {
+          id: 1,
+          title: 'Título 1',
+          body: 'Corpo 1'
+        },
+
+        {
+          id: 2,
+          title: 'Título 2',
+          body: 'Corpo 2 '
+        },
+
+        {
+          id: 3,
+          title: 'Título 3',
+          body: 'Corpo 3'
+        },
+
+
+      ]
     };
+  };
+
+  timeoutUpdate = null;
+
+  componentDidMount() {
+    this.handleTimeout();
   }
 
-  handlePClick = () => {
-     this.setState({ name: 'Schneider' });
+  componentDidUpdate(){
+   // clearTimeout(this.timeoutUpdate)  
+    this.handleTimeout();
   }
 
-  handleAClick = (event) => {
-    event.preventDefault(); // não quero que o evento faça o que ele ia fazer antes (abrir o site)
-    const { counter } = this.state
-    this.setState({ counter: counter + 1 })
-
+  componentWillUnmount() {
+    clearTimeout(this.timeoutUpdate);
   }
 
+  handleTimeout = () => {
+    const { posts, counter } = this.state;
+    posts[0].title = 'Título 1 - Alterado';
+
+   this.timeoutUpdate = setTimeout(() => {
+      this.setState({ posts, counter: counter + 1 });
+    }, 1000);
+
+  };
 
   render() {
 
-    const { name, counter } = this.state;
+    const { posts, counter } = this.state;
 
     return (
 
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p onClick={this.handlePClick}>
-            {name} {counter}
-          </p>
-          <a
-            onClick={this.handleAClick}
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Este é o link
-          </a>
-        </header>
+        <h1>{counter}</h1>
+        {
+          posts.map(post => (
+            <div key={post.id}>
+              <h1 >{post.title}</h1>
+              <p>{post.body}</p>
+            </div>
+          ))
+
+        }
       </div>
 
     );
   }
-}
-
+};
 
 
 export default App;
