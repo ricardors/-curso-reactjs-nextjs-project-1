@@ -12,3 +12,8 @@
   min-height: 100px;
   align-items: flex-end;
 }
+
+.search-container, .search-container h1{
+  margin-bottom: 30px;
+
+}
